@@ -192,7 +192,11 @@ namespace torch {
 			auto _maybe_opt_step(torch::optim::Optimizer& optimizer, OptimizerStates& optimizer_state, torch::optim::Optimizer::LossClosure args) -> c10::optional<c10::Scalar> {
 				if (optimizer_state.contains("found_inf_per_device")) {
 					auto& found_inf_per_device = ::std::get<1>(optimizer_state["found_inf_per_device"]);
-					if (!sum(found_inf_per_device)) {
+					double total_sum = 0.0;
+					for (const auto& [device_type, tensor] : found_inf_per_device) {
+        				total_sum += tensor.sum().item<double>();
+    				}
+					if (!total_sum) {
 						auto tensor = optimizer.step(args);
 						if (tensor.defined())
 							return tensor.item();

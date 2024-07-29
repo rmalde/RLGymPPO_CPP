@@ -2,6 +2,8 @@
 
 project("RLGymSim_CPP")
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # Add all headers and code files
 file(GLOB_RECURSE FILES_SRC "src/*.cpp" "src/*.h")
 add_library(RLGymSim_CPP STATIC ${FILES_SRC})
