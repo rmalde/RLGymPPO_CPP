@@ -1,3 +1,54 @@
+# FORKED VERSION
+
+This forked version is meant to run on Linux cloud machine with GPU.
+
+# INSTALLATION FOR LINUX CLOUD
+```
+git clone https://github.com/rmalde/RLGymPPO_CPP.git --recurse
+git checkout linux
+```
+- Install CUDA 11.8: https://developer.nvidia.com/cuda-11-8-0-download-archive
+- If the cloud machine already comes with another version of cuda installed (check with nvidia-smi), 
+then use the `--toolkit --override` flags to just install the toolkit. (Takes a while) 
+```
+sudo sh cuda_11.8.0_520.61.05_linux.run --toolkit --override --silent
+```
+- Download libtorch for CUDA 11.8: https://pytorch.org/get-started/locally/, CXX-ABI
+- Unzip and put the `libtorch` folder inside `RLGymPPO_CPP/RLGymPPO_CPP`
+- Install gcc-11 and g++-11
+```
+sudo apt install gcc-11 g++-11 build-essential
+```
+ - Some python installation things
+```
+sudo apt install python3-dev
+conda install -c conda-forge libstdcxx-ng
+```
+ - Now, make the build folder in the top level directory
+```
+mkdir build
+cd build
+cmake ..
+make
+```
+- Build and run the [Asset Dumper](https://github.com/ZealanL/RLArenaCollisionDumper), and put the collision_meshes folder in the build directory
+
+Now you can finally run!
+```
+./RLGymPPO_CPP_Example 
+```
+
+## Troubleshooting
+- If your system already has a newer version of gcc, you might need to force the system to use 11 by default:
+```
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11
+```
+ - MetricSender: Failed to import metrics receiver, exception: ModuleNotFoundError: No module named 'python_scripts'. 
+ Fix: Move the build/RLGymPPO_CPP/python_scripts directory up on level, so that it's just in build/
+
+
+
 # RLGymPPO_CPP
 A lightning-fast C++ implementation and extension of [RLGym-PPO](https://github.com/AechPro/rlgym-ppo), as well as rlgym-sim
 

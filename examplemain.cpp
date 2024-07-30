@@ -107,16 +107,17 @@ int main() {
 	LearnerConfig cfg = {};
 
 	// Play around with these to see what the optimal is for your machine, more isn't always better
-	cfg.numThreads = 16;
+	cfg.numThreads = 64;
 	cfg.numGamesPerThread = 24;
 
 	// We want a large itr/batch size
 	// You'll want to increase this as your bot improves, up to an extent
-	int tsPerItr = 100 * 1000;
-	cfg.timestepsPerIteration = tsPerItr;
-	cfg.ppo.batchSize = tsPerItr;
-	cfg.ppo.miniBatchSize = 25 * 1000; // Lower this if too much VRAM is being allocated
-	cfg.expBufferSize = tsPerItr * 3;
+	int tsPerItr = 500'000;
+    int expBufferSize = 500'000;
+    cfg.timestepsPerIteration = tsPerItr;
+    cfg.ppo.batchSize = 100'000;
+    cfg.ppo.miniBatchSize = 50'000; 
+    cfg.expBufferSize = expBufferSize;
 	
 	// This is just set to 1 to match rlgym-ppo example
 	// I've found the best value is somewhere between 2 and 4
@@ -131,8 +132,8 @@ int main() {
 	cfg.ppo.criticLR = 2e-4;
 
 	// Default model size
-	cfg.ppo.policyLayerSizes = { 256, 256, 256 };
-	cfg.ppo.criticLayerSizes = { 256, 256, 256 };
+	cfg.ppo.policyLayerSizes = { 2048, 2048, 1024, 1024, 1024 };
+	cfg.ppo.criticLayerSizes = { 2048, 2048, 2048, 1024, 1024 };
 	
 	cfg.sendMetrics = true; // Send metrics
 	cfg.renderMode = false; // Don't render
